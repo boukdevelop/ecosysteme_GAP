@@ -2,7 +2,8 @@
 
 ## Description
 
-Simulation d'écosystème en C++ avec SDL3 mettant en oeuvre la POO avancée.
+Simulation d'écosystème en C++ avec SDL3 mettant en oeuvre la POO (Programmation Orientée Objet) avancée
+
 
 ## Compilation
 
