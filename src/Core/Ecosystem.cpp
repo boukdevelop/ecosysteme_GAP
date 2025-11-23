@@ -1,4 +1,5 @@
 #include "Core/Ecosystem.h"
+#include "Core/Logger.h"
 #include <algorithm>
 #include <iostream>
 
@@ -12,12 +13,12 @@ namespace Ecosystem {
         {
             // Initialisation des statistiques
             mStats = {0, 0, 0, 0, 0, 0};
-            std::cout << "🌍 Écosystème créé: " << width << "x" << height << std::endl;
+                ::Ecosystem::Core::Log(std::string("🌍 Écosystème créé: ") + std::to_string(width) + "x" + std::to_string(height));
         }
 
         // 🗑 DESTRUCTEUR
         Ecosystem::~Ecosystem() {
-            std::cout << "🌍 Écosystème détruit (" << mEntities.size() << " entités nettoyé";
+              ::Ecosystem::Core::Log(std::string("🌍 Écosystème détruit (") + std::to_string(mEntities.size()) + " entités nettoyé)");
         }
 
         // ⚙️ INITIALISATION
@@ -40,7 +41,7 @@ namespace Ecosystem {
 
             // Nourriture initiale
             SpawnFood(20);
-                std::cout << "🌱 Écosystème initialisé avec " << mEntities.size() << " entités";
+                        ::Ecosystem::Core::Log(std::string("🌱 Écosystème initialisé avec ") + std::to_string(mEntities.size()) + " entités");
         }
 
         // 🔄 MISE À JOUR
@@ -188,12 +189,7 @@ namespace Ecosystem {
         void Ecosystem::Render(SDL_Renderer* renderer) const {
             // Rendu de la nourriture
             for (const auto& food : mFoodSources) {
-                SDL_FRect rect = {
-                    food.position.x - 3.0f,
-                    food.position.y - 3.0f,
-                    6.0f,
-                    6.0f
-                };
+                SDL_FRect rect = { food.position.x - 3.0f, food.position.y - 3.0f, 6.0f, 6.0f };
                 SDL_SetRenderDrawColor(renderer, food.color.r, food.color.g, food.color.b, food.color.a);
                 SDL_RenderFillRect(renderer, &rect);
             }

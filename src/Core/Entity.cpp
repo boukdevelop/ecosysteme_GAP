@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include "Core/Logger.h"
 
 namespace Ecosystem {
     namespace Core {
@@ -10,8 +11,8 @@ namespace Ecosystem {
         Entity::Entity(EntityType type, Vector2D pos, std::string entityName)
             : mType(type), position(pos), name(entityName),
               mRandomGenerator(std::random_device{}()) // Initialisation du générateur aléatoire
-
-             // 🔧 INITIALISATION SELON LE TYPE
+        {
+            // 🔧 INITIALISATION SELON LE TYPE
             switch (mType) {
                 case EntityType::HERBIVORE:
                     mEnergy = 80.0f;
@@ -40,8 +41,8 @@ namespace Ecosystem {
             mIsAlive = true;
             mVelocity = GenerateRandomDirection();
 
-            std::cout << "🌱 Entité créée: " << name << " à (" << position.x << " , " << position.y << ")";
-    
+            Ecosystem::Core::Log(std::string("🌱 Entité créée: ") + name + " à (" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")");
+        }
 
         // CONSTRUCTEUR DE COPIE
         Entity::Entity(const Entity& other)
@@ -56,12 +57,12 @@ namespace Ecosystem {
                 size(other.size * 0.8f), // Enfant plus petit
                 mRandomGenerator(std::random_device{}())
         {
-            std::cout << "👶 Copie d'entité créée: " << name << std::endl;
+            ::Ecosystem::Core::Log(std::string("👶 Copie d'entité créée: ") + name);
         }
 
         // DESTRUCTEUR
         Entity::~Entity() {
-                std::cout << "💀 Entité détruite: " << name << " (Âge: " << mAge << ")" << std::endl;
+            ::Ecosystem::Core::Log(std::string("💀 Entité détruite: ") + name + " (Âge: " + std::to_string(mAge) + ")");
         }
 
         // ⚙️ MISE À JOUR PRINCIPALE
@@ -98,7 +99,7 @@ namespace Ecosystem {
             if (mEnergy > mMaxEnergy) {
                 mEnergy = mMaxEnergy;
             }
-            std::cout << "🍽 " << name << " mange et gagne " << energy << " énergie" << std::endl;
+            ::Ecosystem::Core::Log(std::string("🍽 ") + name + " mange et gagne " + std::to_string(energy) + " énergie");
         }
 
         // 🔄 CONSOMMATION D'ÉNERGIE
@@ -127,10 +128,8 @@ namespace Ecosystem {
         void Entity::CheckVitality() {
             if (mEnergy <= 0.0f || mAge >= mMaxAge) {
                 mIsAlive = false;
-                std::cout << "💀 " << name << " meurt - ";
-                if (mEnergy <= 0) std::cout << "Faim";
-                else std::cout << "Vieillesse";
-                std::cout << std::endl;
+                std::string reason = (mEnergy <= 0) ? "Faim" : "Vieillesse";
+                ::Ecosystem::Core::Log(std::string("💀 ") + name + " meurt - " + reason);
             }
         }
 
@@ -146,7 +145,7 @@ namespace Ecosystem {
             std::uniform_real_distribution<float> chance(0.0f, 1.0f);
             if (chance(mRandomGenerator) < 0.3f) {
                 mEnergy *= 0.6f; // Coût énergétique de la reproduction
-                return std::make_unique<Entity>(*this); // Utilise le constructeur de copi
+                return std::make_unique<Entity>(*this); // Utilise le constructeur de copie
             }
             return nullptr;
         }

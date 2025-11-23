@@ -20,7 +20,7 @@ namespace Ecosystem {
                 int mDayCycle;
 
                 // 🎲 Générateur aléatoire
-                std::mt19937 mRandomGenerator;
+                mutable std::mt19937 mRandomGenerator;
 
                 // 📊 STATISTIQUES
                 struct Statistics {

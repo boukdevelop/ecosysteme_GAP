@@ -1,16 +1,18 @@
 // 📁 src/main.cpp
 #include "Core/GameEngine.h"
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
+#include "Core/Logger.h"
 
 int main(int argc, char* argv[]) {
 
-    // 🎲 Initialisation de l'aléatoire
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    
-    std::cout << "🎮 Démarrage du Simulateur d'Écosystème" << std::endl;
-    std::cout << "=======================================" << std::endl;
+    // Possibilité de désactiver les logs avec l'argument -q
+    for (int i = 1; i < argc; ++i) {
+        std::string a = argv[i];
+        if (a == "-q" || a == "--quiet") Ecosystem::Core::gVerbose = false;
+    }
+
+    ::Ecosystem::Core::Log("🎮 Démarrage du Simulateur d'Écosystème");
+    ::Ecosystem::Core::Log("=======================================");
     
     // 🏗 Création du moteur de jeu
     Ecosystem::Core::GameEngine engine("Simulateur d'Écosystème Intelligent", 1200.0f, 1400.0f);
@@ -21,14 +23,14 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    std::cout << "✅ Moteur initialisé avec succès" << std::endl;
-    std::cout << "🎯 Lancement de la simulation..." << std::endl;
-    std::cout << "=== CONTRÔLES ===" << std::endl;
-    std::cout << "ESPACE: Pause/Reprise" << std::endl;
-    std::cout << "R: Reset simulation" << std::endl;
-    std::cout << "F: Ajouter nourriture" << std::endl;
-    std::cout << "FLÈCHES: Vitesse simulation" << std::endl;
-    std::cout << "ÉCHAP: Quitter" << std::endl;
+    ::Ecosystem::Core::Log("✅ Moteur initialisé avec succès");
+    ::Ecosystem::Core::Log("🎯 Lancement de la simulation...");
+    ::Ecosystem::Core::Log("=== CONTRÔLES ===");
+    ::Ecosystem::Core::Log("ESPACE: Pause/Reprise");
+    ::Ecosystem::Core::Log("R: Reset simulation");
+    ::Ecosystem::Core::Log("F: Ajouter nourriture");
+    ::Ecosystem::Core::Log("FLÈCHES: Vitesse simulation");
+    ::Ecosystem::Core::Log("ÉCHAP: Quitter");
     
     // 🎮 Boucle principale
     engine.Run();
@@ -36,6 +38,6 @@ int main(int argc, char* argv[]) {
     // 🛑 Arrêt propre
     engine.Shutdown();
 
-    std::cout << "👋 Simulation terminée. Au revoir !" << std::endl;
+    ::Ecosystem::Core::Log("👋 Simulation terminée. Au revoir !");
     return 0;
 }

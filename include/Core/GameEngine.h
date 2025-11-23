@@ -15,6 +15,7 @@ namespace Ecosystem {
                 Ecosystem mEcosystem;
                 bool mIsRunning;
                 bool mIsPaused;
+                bool mShowDebug;
                 float mTimeScale;
 
                 // ⏱ CHRONOMÉTRE
